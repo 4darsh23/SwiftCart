@@ -1,4 +1,10 @@
+"use client"; 
+
+import { auth } from "@/lib/firebase";
 import { Button } from "@nextui-org/react";
+import { AuthCredential, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { useState } from "react";
+
 
 export default  function page() {
     return (
@@ -47,13 +53,34 @@ export default  function page() {
                    
                 </div>
               <hr/>
-              <Button>
-                Sing in with Google
-              </Button>            
+              <SignInWithGoogleComponent/>     
                </div>
                  
             </section>
         
     </main>
     );
+}
+
+
+
+function SignInWithGoogleComponent () {
+    const  [ isLoading, setIsLoading] = useState(false);
+   
+    const handleLogin =  async () => { setIsLoading (true)
+
+        try {  
+            const user = await signInWithPopup(auth, new GoogleAuthProvider ());  
+            
+        } catch (error) {
+            toast.error(error?.message);
+        }
+setIsLoading(false);
+
+    };
+   
+   return  <Button isLoading = {isLoading} isDisabled={isLoading} onClick={handleLogin}>   
+    Sign In With Google
+  </Button>        
+
 }

@@ -1,4 +1,4 @@
-import { getApp, initializeApp } from "firebase/app";
+import { getApp, getApps, initializeApp } from "firebase/app";
 import { getAnalytics, isSupported } from "firebase/analytics";
 import { getFirestore} from "firebase/firestore";
 import {getAuth} from "firebase/auth";
@@ -14,8 +14,9 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-const app = getsApps().length ? initializeApp(firebaseConfig): getApp;
+const app = !getApps().length ? initializeApp(firebaseConfig): getApp;
 export const analytics = isSupported().then((yes)=> yes? getAnalytics(app) : null);
+
 export const db = getFirestore(app);
 export const auth = getAuth(app);
 export const storage = getStorage(app);
