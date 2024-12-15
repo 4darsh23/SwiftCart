@@ -1,12 +1,21 @@
 "use client"; 
 
+import { useAuth } from "@/context/AuthContext";
 import { auth } from "@/lib/firebase";
 import { Button } from "@nextui-org/react";
 import { AuthCredential, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 
 export default  function page() {
+    const {user} = useAuth();
+    const router = useRouter();
+    useEffect(()=>{
+        if(user) {
+router.push("/dashboard") ;
+        }
+    }, [user]);
     return (
     <main className="w-full flex justify-center items-center bg-gray-300 md:py-20 min-h-screen">
         
@@ -79,7 +88,7 @@ setIsLoading(false);
 
     };
    
-   return  <Button isLoading = {isLoading} isDisabled={isLoading} onClick={handleLogin}>   
+   return  <Button isLoading = {isLoading} isDisabled={isLoading} onPress={handleLogin}>   
     Sign In With Google
   </Button>        
 
